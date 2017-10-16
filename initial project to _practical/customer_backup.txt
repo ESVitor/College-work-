@@ -1,0 +1,29 @@
+at the command prompt (admin):
+
+C:\WINDOWS\system32>cd\
+C:\>cd xampp\mysql\bin
+C:\xampp\mysql\bin>mysqldump -u root -p insurance customer > C:\Users\Ennio\Desktop\customer_backup.sql
+Enter password:
+
+MariaDB [(none)]> USE insurance;
+MariaDB [(insurance)]> SET FOREIGN_KEY_CKECKS=0;
+DROP TABLE customer;
+
+MariaDB [(insurance)]> SOURCE C:\Users\Ennio\Desktop\customer_backup.sql;
+MariaDB [(insurance)]> SET FOREIGN_KEY_CKECKS=1; 
+
+====================================================================================================
+
+at the command prompt (admin):
+
+C:\WINDOWS\system32>cd\
+C:\>cd xampp\mysql\bin
+C:\xampp\mysql\bin>mysqldump -u root -p insurance policy > C:\Users\Ennio\Desktop\policy_backup.sql
+Enter password:
+
+MariaDB [(none)]> USE insurance;
+MariaDB [(insurance)]> SET FOREIGN_KEY_CKECKS=0;
+DROP TABLE policy;
+
+MariaDB [(insurance)]> SOURCE C:\Users\Ennio\Desktop\policy_backup.sql;
+MariaDB [(insurance)]> SET FOREIGN_KEY_CKECKS=1;

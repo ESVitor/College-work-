@@ -1,0 +1,21 @@
+               Clinic Ltd.
+
+
+               Appointment
+
+Bill id: 3
+
+Patient id: 8
+
+Doctor id: 1
+
+Description:  Prescription requested: 30 euro
+
+Price: 30.00
+
+Date: 1999-11-11
+
+Time: 11:11:11
+
+
+

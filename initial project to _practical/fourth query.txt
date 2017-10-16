@@ -1,0 +1,6 @@
+SELECT LEFT(f_name, 1) AS 'Name', UPPER(surname) AS 'Surname', dob AS 'Data of birth', SUBSTRING(address,1,40) AS 'Address'
+FROM customer
+WHERE dob >= '1990-01-01'
+	OR address LIKE "%Dublin 24%"
+ORDER BY dob
+;

@@ -1,0 +1,19 @@
+               Clinic Ltd.
+
+
+               Appointment
+
+Appointment id: 2
+
+Patient id:     1
+
+Doctor id:      1
+
+Date:           2015-11-11
+
+Time:           11:11:11
+
+Medication:     232B
+
+Comments:       nearly dead
+

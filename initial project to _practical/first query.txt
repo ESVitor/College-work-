@@ -1,0 +1,5 @@
+SELECT bills_name AS Bills, bills_expired AS Expired_date
+FROM bills_not_paid
+WHERE bills_expired = '2015-12-31' OR bills_expired ='2016-01-02'
+ORDER BY bills_name
+;
