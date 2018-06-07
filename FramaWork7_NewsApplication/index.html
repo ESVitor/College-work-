@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, 
+        maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title>Index</title>
+    <!-- Path to Framework7 Library CSS-->
+    <link rel="stylesheet" href="dist/css/framework7.ios.min.css">
+    <!-- Path to your custom icons-->
+    <link rel="stylesheet" href="css/framework7-icons.css">
+	<!-- 
+    The style tag above contains a section and formats to count each news 
+    that is been displayed. By this way it shows which news is first or last. 
+  --> 
+  <style>
+		body {
+			counter-reset: section;
+		}
+		
+    #articles::before {
+			counter-increment: section;
+			content: "# " counter(section) " ";
+			color: black;
+		}
+		
+    span {
+			margin-left: 20px;
+		}
+    
+    #image {
+      text-align: center; 
+    }
+	</style>
+	</head>
+  <body>
+    <div class="login-screen modal-in">
+      <div data-page="login-screen" class="page no-navbar no-toolbar no-swipeback">
+        <div class="page-content login-screen-content">
+          <script>
+            // This is called with the results from from FB.getLoginStatus().
+            function statusChangeCallback(response) {
+              console.log('statusChangeCallback');
+              console.log(response);
+              // The response object is returned with a status field that lets the
+              // app know the current login status of the person.
+              // Full docs on the response object can be found in the documentation
+              // for FB.getLoginStatus().
+              if (response.status === 'connected') {
+                // Logged into your app and Facebook.
+                myApp.closeModal('.login-screen.modal-in');
+                connect();
+              } else {
+                // The person is not logged into your app or we are unable to tell.
+                document.getElementById('status').innerHTML = 'Please log ' +
+                'into this app.';
+                window.location = "index.html";
+              }
+            }
+            // This function is called when someone finishes with the Login
+            // Button.  See the onlogin handler attached to it in the sample
+            // code below.
+            function checkLoginState() {
+              FB.getLoginStatus(function(response) {
+                statusChangeCallback(response);
+              });
+            }
+            window.fbAsyncInit = function() {
+              FB.init({
+                appId      : '1778221268885711',
+                cookie     : true,  // enable cookies to allow the server to access 
+                // the session
+                xfbml      : true,  // parse social plugins on this page
+                version    : 'v2.10' // use graph api version 2.8
+              });
+              // Now that we've initialized the JavaScript SDK, we call 
+              // FB.getLoginStatus().  This function gets the state of the
+              // person visiting this page and can return one of three states to
+              // the callback you provide.  They can be:
+              //
+              // 1. Logged into your app ('connected')
+              // 2. Logged into Facebook, but not your app ('not_authorized')
+              // 3. Not logged into Facebook and can't tell if they are logged into
+              //    your app or not.
+              //
+              // These three cases are handled in the callback function.
+              FB.Event.subscribe('auth.logout', function(response) {
+                //do something with response object
+                window.location = "index.html";
+              });  
+              FB.getLoginStatus(function(response) {
+                statusChangeCallback(response);
+              });
+            };
+            // Load the SDK asynchronously
+            (function(d, s, id) {
+              var js, fjs = d.getElementsByTagName(s)[0];
+              if (d.getElementById(id)) return;
+              js = d.createElement(s); js.id = id;
+              js.src = "//connect.facebook.net/en_US/sdk.js";
+              fjs.parentNode.insertBefore(js, fjs);
+            }(document, 'script', 'facebook-jssdk'));                                                                      
+            // Here we run a very simple test of the Graph API after login is
+            // successful.  See statusChangeCallback() for when this call is made.
+            function connect() {
+              console.log('Welcome!  Fetching your information.... ');
+              FB.api('/me', function(response) {
+                console.log('Successful login for: ' + response.name);
+                console.log(response);
+                document.getElementById('response.name').innerHTML = '<b>Welcome,</b> ' + response.name + '!';
+                document.getElementById("profileImage").innerHTML =  '<img src="https://graph.facebook.com/' + response.id + '/picture?type=large" height= "200px">';	
+                document.getElementById('id').innerHTML = '<b>ID:</b> ' + response.id;	
+              });
+            }  
+          </script>	
+          <div class="login-screen-title">World News</div><br>
+          <p id="image">
+            <img src="images/login.png" alt="Login page" width="200" height="200">
+              <div style="position: absolute;top: 80%;left: 50%;margin-right: -50%;
+                 transform: translate(-50%, -50%);" class="fb-login-button" 
+                    data-width="30" data-max-rows="1" data-size="large" 
+                        data-button-type="continue_with" data-show-faces="false" 
+                            data-auto-logout-link="true" data-use-continue-as="true">
+			  </div>
+          </p>
+        </div>
+      </div> 
+    </div>
+		
+    <!-- Status bar overlay for fullscreen mode-->
+    <div class="statusbar-overlay"></div>
+    <!-- Panels overlay-->
+    <div class="panel-overlay"></div>
+    <!-- Left panel with reveal effect-->
+    <div class="panel panel-left panel-cover">
+      <div class="content-block">
+        <h3 style =  "text-align: center; margin-bottom: 10%">News</h3>
+        <a href="#view-2" class="tab-link"><i class="f7-icons">briefcase</i>
+            <span  class="tabbar-label"> Business News</span></a><br><br>
+        <a href="#view-3" class="tab-link"><i class="f7-icons">flag</i>
+            <span  class="tabbar-label">  Sports News</span></a><br><br>
+        <a href="#view-4" class="tab-link"><i class="f7-icons">money_dollar</i>
+            <span  class="tabbar-label"> Financial News</span></a><br><br>
+        <a href="#view-5" class="tab-link active" > <i class="f7-icons">list</i>
+            <span class="tabbar-label">Top 10</span></a><br><br>
+        <a href="#view-6" class="tab-link active" > <i class="f7-icons">person</i>
+            <span class="tabbar-label">Authors</span></a><br><br>
+        <a href="#view-7" class="tab-link active" > <i class="f7-icons">compose</i>
+            <span class="tabbar-label">New story</span></a><br><br>  
+        <a href="#view-8" class="tab-link active" > <i class="f7-icons">collection</i>
+            <span class="tabbar-label">JSON output</span></a><br><br>    
+        
+      </div>
+    </div>
+    <!-- Right panel with cover effect-->
+    <div class="panel panel-right panel-cover">
+      <div class="content-block">
+       	<h3 style =  "text-align: center;">Logout</h3>	
+        <p  style="position: absolute;bottom: 10%;left: 50%;margin-right: -50%;
+            transform: translate(-50%, -50%);" id="profileImage"></p>
+        <div style="position: absolute;bottom: 15%;left: 48%;right: -50%;
+            transform: translate(-50%, -50%);" class="fb-login-button" 
+                data-width="30" data-max-rows="1" data-size="large" 
+                    data-button-type="continue_with" data-show-faces="false" 
+                        data-auto-logout-link="true" data-use-continue-as="true">
+        </div>
+      </div>
+    </div>
+    <!-- Views, and they are tabs-->
+    <!-- We need to set "toolbar-through" class on it to keep space for our tab bar-->
+    <div class="views tabs toolbar-through">
+      <!-- Your first view, it is also a .tab and should have "active" class to make it visible by default-->
+      <div id="view-1" class="view view-main tab active">
+        <!-- Pages-->
+        <div class="pages">
+          <!-- Page, data-page contains page name-->
+          <div data-page="index-1" class="page">
+            <!-- Scrollable page content-->
+            <div class="page-content" style="background-image: url(images/breakingNewsLogo.png); 
+                background-repeat: no-repeat;background-position: center; background-size: 100%;opacity: 1;">
+              <p id="response.name" style="position: absolute; top:2%;left:2%; color: red;font-weight: 900;"></p>
+              <div class="content-block-title"></div>
+              <div class="content-block"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Second view (for second wrap)-->
+      <div id="view-2" class="view tab">
+        <!-- We can make with view with navigation, let's add Top Navbar-->
+        <div class="navbar">
+          <div class="navbar-inner">
+            <div class="center sliding">Business News</div>
+          </div>
+        </div>
+        <br>
+        <div class="pages">
+          <div data-page="index-2" class="page">
+            <div class="page-content">
+              <div class="content-block-title"></div>
+              <div class="content-block">
+                <script src="http://code.jquery.com/jquery-1.10.2.js"></script> 
+                <div class="card">
+                  <div class="card-content" >
+                    <div class="card-content-inner" style="columns: 400px 3;">
+                      <script>
+                        $.getJSON( "https://newsapi.org/v1/articles?source=business-insider&sortBy=top&apiKey=fbdd613fdfed4ae3bf875f3615bb29a3", function( data ) {
+                          console.log(data.articles);
+                          var arrayOfData = data.articles;
+                          for (var i = 0; i < 10; i++) {
+                            document.getElementById('business').innerHTML 
+                            += 	'<p id="articles" style="	display:inline-block;	padding: 2% 2%; border: 1px solid grey;	">'
+                            +		'<img style="max-width: 100%;max-height: 100%;" src="' + arrayOfData[i].urlToImage + '"/>' + '<br>' 
+                            +		arrayOfData[i].description + '<br>' 
+                            +		arrayOfData[i].publishedAt + '<br>' 
+                            +		'<a  href="'+ arrayOfData[i].url +'" class="link external">See the full article</a>' 
+                            + 	'</p>'
+                            ;
+                          }  
+                       });
+                      </script>
+                      <div id="business" > </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="view-3" class="view tab">
+        <!-- We can make with view with navigation, let's add Top Navbar-->
+        <div class="navbar">
+          <div class="navbar-inner">
+          <div class="center sliding">Sports News</div>
+          </div>
+        </div>
+        <br>
+        <div class="pages">
+          <div data-page="index-3" class="page">
+            <div class="page-content">
+              <div class="content-block-title"></div>
+              <div class="content-block">
+                <script src="http://code.jquery.com/jquery-1.10.2.js"></script> 
+                <div class="card">
+                  <div class="card-content">
+                    <div class="card-content-inner" style="columns: 400px 3;">
+                      <script >
+                        $.getJSON( "https://newsapi.org/v1/articles?source=bbc-sport&sortBy=top&apiKey=fbdd613fdfed4ae3bf875f3615bb29a3", function( data ) {
+                          console.log(data.articles);
+                          var arrayOfData = data.articles;
+                          for (var i = 0; i < 10; i++) {
+                            document.getElementById('sports').innerHTML 
+                              += 	'<p id="articles" style="	display:inline-block;	padding: 2% 2%; border: 1px solid grey;	">'
+                              +		'<img style="max-width: 100%;max-height: 100%;" src="' + arrayOfData[i].urlToImage + '"/>' + '<br>' 
+                              +		arrayOfData[i].description + '<br>' 
+                              +		arrayOfData[i].publishedAt + '<br>' 
+                              +		'<a  href="'+ arrayOfData[i].url +'" class="link external">See the full article</a>' 
+                              + 	'</p>'
+                            ;
+                          }  
+                        });
+                       </script>
+                       <div id="sports" > </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+	    <div id="view-4" class="view tab">
+        <!-- We can make with view with navigation, let's add Top Navbar-->
+        <div class="navbar">
+          <div class="navbar-inner">
+            <div class="center sliding">Financial News</div>
+          </div>
+        </div>
+        <br>
+        <div class="pages">
+          <div data-page="index-4" class="page">
+            <div class="page-content">
+              <div class="content-block-title"></div>
+              <div class="content-block">
+               <script src="http://code.jquery.com/jquery-1.10.2.js"></script> 
+                <div class="card">
+                  <div class="card-content">
+                    <div class="card-content-inner" style="columns: 400px 3;">
+                      <script >
+                        $.getJSON( "https://newsapi.org/v1/articles?source=bloomberg&sortBy=top&apiKey=fbdd613fdfed4ae3bf875f3615bb29a3", function( data ) {
+                          console.log(data.articles);
+                          var arrayOfData = data.articles;
+                          for (var i = 0; i < 10; i++) {
+                            document.getElementById('financial').innerHTML 
+                            += 	'<p id="articles" style="	display:inline-block;	padding: 2% 2%; border: 1px solid grey;	">'
+                            + 	'<img style="max-width: 100%;max-height: 100%;" src="' + arrayOfData[i].urlToImage + '"/>' + '<br>' 
+                            +		arrayOfData[i].description + '<br>' 
+                            +		arrayOfData[i].publishedAt + '<br>' 
+                            +		'<a  href="'+ arrayOfData[i].url +'" class="link external">See the full article</a>' 
+                            + 	'</p>'
+                          ;
+                        }  
+                      });
+                    </script>
+                    <div id="financial" > </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="view-5" class="view tab">
+      <!-- We can make with view with navigation, let's add Top Navbar-->
+      <div class="navbar">
+        <div class="navbar-inner">
+          <div class="center sliding">Top 10 Stories From News Room</div>
+        </div>
+      </div>
+      <br>
+      <div class="pages">
+        <div data-page="index-5" class="page">
+          <div class="page-content">
+            <div class="content-block-title"></div>
+            <div class="content-block">
+              <script src="http://code.jquery.com/jquery-1.10.2.js"></script> 
+              <div class="card">
+                <div class="card-content" >
+                  <div class="card-content-inner">
+                    <script >
+                      $.getJSON( "http://52.48.79.163/db.php?type=top10stories", function( data ) {
+                        console.log(data.news);
+                        var arrayOfData = data.news;
+                        for (var i = 0; i < 10; i++) {
+                          document.getElementById('top10newsroom').innerHTML 
+                          +=  '<p id="articles" style="padding: 2% 2%; border: 1px solid grey; ">'
+                          +   arrayOfData.story[i]
+                          +   '</p>'
+                          ;
+                        }  
+                      });
+                    </script>
+                    <div id="top10newsroom" > </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="view-6" class="view tab">
+      <!-- We can make with view with navigation, let's add Top Navbar-->
+      <div class="navbar">
+        <div class="navbar-inner">
+          <div class="center sliding">list of authors From News Room</div>
+        </div>
+      </div>
+      <br>
+      <div class="pages">
+        <div data-page="index-6" class="page">
+          <div class="page-content">
+            <div class="content-block-title"></div>
+            <div class="content-block">
+              <script src="http://code.jquery.com/jquery-1.10.2.js"></script> 
+              <div class="card">
+                <div class="card-content" >
+                  <div class="card-content-inner">
+                    <script >
+                      $.getJSON( "http://52.48.79.163/db.php?type=currentauthors", function( data ) {
+                        console.log(data.authors);
+                        var arrayOfData = data.authors;
+                        for (var i = 0; i < 10; i++) {
+                          document.getElementById('authors').innerHTML 
+                          +=  '<p id="articles" style="padding: 2% 2%; border: 1px solid grey; ">'
+                          +   arrayOfData.author[i]
+                          +   '</p>'
+                          ;
+                        }  
+                      });
+                    </script>
+                    <div id="authors" > </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="view-7" class="view tab">
+      <!-- We can make with view with navigation, let's add Top Navbar-->
+      <div class="navbar">
+        <div class="navbar-inner">
+          <div class="center sliding">Inserting a new story to News Room</div>
+        </div>
+      </div>
+      <br>
+      <div class="pages">
+        <div data-page="index-7" class="page">
+          <div class="page-content">
+            <div class="content-block-title"></div>
+            <div class="content-block">
+              <script src="http://code.jquery.com/jquery-1.10.2.js"></script> 
+            	<div class="card">
+                <div class="card-content" >
+                  <div class="card-content-inner">
+                    <div class="item-media"><i class="icon f7-icons">compose</i></div>
+                    <!-- http://52.48.79.163/db.php?type=newstory&data=test&id=345345345 -->
+                    <!-- "http://52.48.79.163/db.php?type=newstory&data=" + res + "&id=" + response.id -->
+                    <script>
+                      // Saving data into a local variable and encoding it. 
+                      function sendText(){
+                        FB.api('/me', function(response) {
+                          var db = "http://52.48.79.163/db.php?type=newstory&data="; 
+                          var uri = document.getElementById("userinput").value;
+                          var res = encodeURI(uri);
+                          var id = "&id=";
+                          // variable that create the url to be passed to the db.php
+                          var url = db + res + id + response.id; 
+                          console.log("Sending text...");
+                          $.getJSON(url); 
+                        });    
+                      }
+                    </script>
+                    <textarea id="userinput" name="userinput" rows="10" cols="27"> </textarea>
+                    <button onclick="sendText()" > Send text </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="view-8" class="view tab">
+      <!-- We can make with view with navigation, let's add Top Navbar-->
+      <div class="navbar">
+        <div class="navbar-inner">
+          <div class="center sliding">JSON output</div>
+        </div>
+      </div>
+      <br>
+      <div class="pages">
+        <div data-page="index-8" class="page">
+          <div class="page-content">
+            <div class="content-block-title"></div>
+            <div class="content-block">
+              <script src="http://code.jquery.com/jquery-1.10.2.js"></script> 
+            	<div class="card">
+                <div class="card-content" >
+                  <div class="card-content-inner">
+                    <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+                    <script>
+                      var CCTArray;
+                      var APIArray1;
+                      var APIArray2;
+                      var APIArray3;
+                      var story = [];
+                      top10();
+                      function top10() {
+                        $.getJSON( "http://52.48.79.163/db.php?type=top10stories", function( data ) {
+                          CCTArray = data.news;
+                          for (var i = 0; i < 10; i++) {
+                            story.push({date : new Date()
+                                , description: CCTArray.story[i]
+                            });
+                          }
+                          news1();
+                        });
+                      }
+                      function news1() {
+                        $.getJSON( "https://newsapi.org/v1/articles?source=business-insider&sortBy=top&apiKey=fbdd613fdfed4ae3bf875f3615bb29a3", function( data ) {
+                          APIArray1 = data.articles;
+			                    for (var i = 0; i < 10; i++) {
+			                      story.push({description: APIArray1[i].description
+                                      , date : APIArray1[i].publishedAt
+                                      , url : APIArray1[i].url
+                            });                            
+                          }
+                          news2();
+                        });
+                      }
+                      function news2() {
+                        $.getJSON( "https://newsapi.org/v1/articles?source=bbc-sport&sortBy=top&apiKey=fbdd613fdfed4ae3bf875f3615bb29a3", function( data ) {
+                           APIArray2 = data.articles;
+			                      for (var i = 0; i < 10; i++) {
+			                        story.push({description: APIArray2[i].description
+                                        , date : APIArray2[i].publishedAt
+                                        , url : APIArray2[i].url
+                              });                            
+                            }
+                           news3();
+                         });
+                      }
+                      function news3() {
+                         $.getJSON( "https://newsapi.org/v1/articles?source=bloomberg&sortBy=top&apiKey=fbdd613fdfed4ae3bf875f3615bb29a3", function( data ) {
+                          APIArray3 = data.articles;
+			                      for (var i = 0; i < 10; i++) {
+			                        story.push({description: APIArray3[i].description
+                                        , date : APIArray3[i].publishedAt
+                                        , url : APIArray3[i].url
+                              });                            
+                            }
+                          getAllNews();
+                        });
+                      }
+                      function getAllNews() {
+                        var m = {news: {story}};
+                        var st = JSON.stringify(m);
+                        document.getElementById('allNews').innerHTML = st;
+                      }
+                    </script>  
+                    <div id="allNews"></div>                    
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>  
+      <!-- Bottom Tabbar-->
+      <div class="toolbar tabbar tabbar-labels">
+        <div class="toolbar-inner">
+          <a href="#view-1" class="tab-link active" > <i class="f7-icons">home</i><span class="tabbar-label">Home</span></a>
+          <a href="#" class="open-panel tab-link active"> <i class="f7-icons">world</i><span class="tabbar-label">News</span></a>   
+          <a  href="#" data-panel="right" class="open-panel tab-link active" > <i class="f7-icons">logout</i><span class="tabbar-label">Logout</span></a>
+        </div>
+      </div>
+    </div>
+    <!-- Path to Framework7 Library JS-->
+    <script type="text/javascript" src="dist/js/framework7.min.js"></script>
+    <!-- Path to your app js-->
+    <script type="text/javascript" src="js/my-app.js"></script>
+  </body>
+</html>
